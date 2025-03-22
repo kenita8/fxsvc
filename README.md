@@ -42,7 +42,7 @@ When you want to stably operate Go applications as background services in a Wind
 Install the `fxsvc` library with the following command:
 
 ```bash
-go get [github.com/kenita8/fxsvc](https://www.google.com/search?q=https://github.com/kenita8/fxsvc)
+go get github.com/kenita8/fxsvc
 ```
 
 ## Basic Usage

@@ -40,7 +40,7 @@ Go で開発されたアプリケーションを Windows 環境でバックグ�
 以下のコマンドで `fxsvc` ライブラリをインストールします。
 
 ```bash
-go get [github.com/kenita8/fxsvc](https://www.google.com/search?q=https://github.com/kenita8/fxsvc)
+go get github.com/kenita8/fxsvc
 ```
 
 ## 基本的な使い方
