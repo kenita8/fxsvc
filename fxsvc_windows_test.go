@@ -220,14 +220,22 @@ func TestFxServiceWin_Run(t *testing.T) {
 				},
 			}
 			s := newFxService(mockApp, "testService", mockSvc, logger, defaultSignalHandler)
-			s.Run()
+			err := s.Run()
 			close(req)
 			close(chg)
-			changes := []svc.State{}
-			for val := range chg {
-				changes = append(changes, val.State)
+			if tc.startErr == nil && tc.stopErr == nil {
+				changes := []svc.State{}
+				for val := range chg {
+					changes = append(changes, val.State)
+				}
+				assert.Equal(t, tc.changes, changes)
 			}
-			assert.Equal(t, tc.changes, changes)
+			if tc.startErr != nil {
+				assert.ErrorIs(t, ErrStartApplication, err)
+			}
+			if tc.stopErr != nil {
+				assert.ErrorIs(t, ErrStopApplication, err)
+			}
 		})
 	}
 }

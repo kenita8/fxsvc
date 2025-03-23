@@ -95,9 +95,9 @@ func (s *serviceProgress) signalStopPending() {
 }
 
 func (s *serviceProgress) signalAll() {
-	s.startPending.signal()
-	s.running.signal()
-	s.stopPending.signal()
+	s.signalStartPending()
+	s.signalStopInitiation()
+	s.signalStopPending()
 }
 
 type FxServiceWin struct {
@@ -188,7 +188,6 @@ func (s *FxServiceWin) Run() error {
 	defer cancelStartCtx()
 	err := s.start(startCtx)
 	if err != nil {
-		s.progress.signalAll()
 		return err
 	}
 
@@ -219,6 +218,8 @@ loop:
 			default:
 				s.logger.Info("Unexpected control request", "cmd", c.Cmd)
 			}
+		case <-s.progress.running.ch:
+			break loop
 		}
 	}
 
@@ -232,7 +233,12 @@ func (s *FxServiceWin) debug() {
 	s.logger.Info("Running in debug mode")
 	s.progress.waitForStartPending()
 	s.signalHandler(s.osSignalChan)
-	<-s.osSignalChan
+	select {
+	case <-s.osSignalChan:
+		break
+	case <-s.progress.running.ch:
+		break
+	}
 	s.progress.signalStopInitiation()
 	s.progress.waitForStopPending()
 }
