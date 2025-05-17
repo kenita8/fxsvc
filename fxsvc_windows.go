@@ -135,7 +135,7 @@ func (s *FxServiceWin) start(ctx context.Context) error {
 	if err != nil {
 		s.progress.signalAll()
 		s.logger.Error(err, "Failed to start application")
-		return ErrStartApplication.Details("err", err, "service", s.name)
+		return ErrStartApplication.WithDetails("err", err, "service", s.name)
 	}
 	s.progress.signalStartPending()
 	s.logger.Info("Service started")
@@ -149,7 +149,7 @@ func (s *FxServiceWin) stop(ctx context.Context) error {
 	if err != nil {
 		s.progress.signalAll()
 		s.logger.Error(err, "Failed to stop application")
-		return ErrStopApplication.Details("err", err, "service", s.name)
+		return ErrStopApplication.WithDetails("err", err, "service", s.name)
 	}
 
 	s.progress.signalStopPending()

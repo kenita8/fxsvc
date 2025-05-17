@@ -231,10 +231,10 @@ func TestFxServiceWin_Run(t *testing.T) {
 				assert.Equal(t, tc.changes, changes)
 			}
 			if tc.startErr != nil {
-				assert.ErrorIs(t, ErrStartApplication, err)
+				assert.ErrorIs(t, err, ErrStartApplication)
 			}
 			if tc.stopErr != nil {
-				assert.ErrorIs(t, ErrStopApplication, err)
+				assert.ErrorIs(t, err, ErrStopApplication)
 			}
 		})
 	}
